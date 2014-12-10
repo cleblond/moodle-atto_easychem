@@ -1,0 +1,10 @@
+{
+  "name": "moodle-atto_easychem-button",
+  "builds": {
+    "moodle-atto_easychem-button": {
+      "jsfiles": [
+        "button.js"
+      ]
+    }
+  }
+}
