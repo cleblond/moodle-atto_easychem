@@ -32,43 +32,20 @@ if ($ADMIN->fulltree) {
     $name = new lang_string('librarygroup1', 'atto_easychem');
     $desc = new lang_string('librarygroup1_desc', 'atto_easychem');
     $default = '
-\cdot
-\times
-\ast
-\div
-\diamond
-\pm
-\mp
-\oplus
-\ominus
-\otimes
-\oslash
-\odot
-\circ
-\bullet
-\asymp
-\equiv
-\subseteq
-\supseteq
-\leq
-\geq
-\preceq
-\succeq
-\sim
-\simeq
-\approx
-\subset
-\supset
-\ll
-\gg
-\prec
-\succ
-\infty
-\in
-\ni
-\forall
-\exists
-\neq
+CH3
+CH2
+CH
+OH
+/\/
+=
+->
+<->
+<=>
+"^o"
+"|^"
+"|v"
+{R}
+(CH2)\'n\'
 ';
     $setting = new admin_setting_configtextarea('atto_easychem/librarygroup1',
                                                 $name,
