@@ -185,7 +185,9 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         if (this.get('texfilteractive')) {
             // Add the button to the toolbar.
             this.addButton({
-                icon: 'e/math',
+                icon: 'easychem',
+                iconComponent: 'atto_easychem',
+                buttonName: 'chart',
                 callback: this._displayDialogue
             });
 
