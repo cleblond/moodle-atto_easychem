@@ -57,20 +57,7 @@ OH
     $name = new lang_string('librarygroup2', 'atto_easychem');
     $desc = new lang_string('librarygroup2_desc', 'atto_easychem');
     $default = '
-\leftarrow
-\rightarrow
-\uparrow
-\downarrow
-\leftrightarrow
-\nearrow
-\searrow
-\swarrow
-\nwarrow
-\Leftarrow
-\Rightarrow
-\Uparrow
-\Downarrow
-\Leftrightarrow
+CH3
 ';
     $setting = new admin_setting_configtextarea('atto_easychem/librarygroup2',
                                                 $name,
@@ -82,40 +69,7 @@ OH
     $name = new lang_string('librarygroup3', 'atto_easychem');
     $desc = new lang_string('librarygroup3_desc', 'atto_easychem');
     $default = '
-\alpha
-\beta
-\gamma
-\delta
-\epsilon
-\zeta
-\eta
-\theta
-\iota
-\kappa
-\lambda
-\mu
-\nu
-\xi
-\pi
-\rho
-\sigma
-\tau
-\upsilon
-\phi
-\chi
-\psi
-\omega
-\Gamma
-\Delta
-\Theta
-\Lambda
-\Xi
-\Pi
-\Sigma
-\Upsilon
-\Phi
-\Psi
-\Omega
+CH3
 ';
     $setting = new admin_setting_configtextarea('atto_easychem/librarygroup3',
                                                 $name,
@@ -127,15 +81,7 @@ OH
     $name = new lang_string('librarygroup4', 'atto_easychem');
     $desc = new lang_string('librarygroup4_desc', 'atto_easychem');
     $default = '
-\sum{a,b}
-\int_{a}^{b}{c}
-\iint_{a}^{b}{c}
-\iiint_{a}^{b}{c}
-\oint{a}
-(a)
-[a]
-\lbrace{a}\rbrace
-\left| \begin{matrix} a_1 & a_2 \\ a_3 & a_4 \end{matrix} \right|
+
 ';
     $setting = new admin_setting_configtextarea('atto_easychem/librarygroup4',
                                                 $name,

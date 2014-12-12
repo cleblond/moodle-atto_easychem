@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['editeasychem'] = 'Edit easychem using <a href="{$a}" target="_blank">TeX</a>';
+$string['editeasychem'] = 'Learn more about Easychem.js syntax <a href="{$a}" target="_blank">here</a>';
 $string['librarygroup1'] = 'Common';
 $string['librarygroup1_desc'] = 'TeX commands listed on the operators tab.';
 $string['librarygroup2'] = 'Rings';
@@ -32,8 +32,7 @@ $string['librarygroup3_desc'] = 'TeX commands listed on the Greek symbols tab.';
 $string['librarygroup4'] = 'Reactions';
 $string['librarygroup4_desc'] = 'TeX commands listed on the advanced tab.';
 $string['pluginname'] = 'EasyChem';
-$string['preview'] = 'Equation preview';
-$string['cursorinfo'] = 'An arrow indicates the position that new elements from the element library will be inserted.';
-$string['saveeasychem'] = 'Save easychem';
+$string['preview'] = 'Preview';
+$string['saveeasychem'] = 'Save';
 $string['settings'] = 'Easychem editor settings';
 $string['update'] = 'Update';

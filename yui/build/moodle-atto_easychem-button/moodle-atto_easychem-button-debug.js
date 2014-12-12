@@ -52,8 +52,8 @@ var COMPONENTNAME = 'atto_easychem',
         LIBRARY_BUTTON: '.' + CSS.LIBRARY + ' button'
     },
     DELIMITERS = {
-        START: '%',
-        END: '%'
+        START: '',
+        END: ''
     },
     TEMPLATES = {
         FORM: '' +
@@ -63,7 +63,7 @@ var COMPONENTNAME = 'atto_easychem',
                 '<textarea class="fullwidth {{CSS.EQUATION_TEXT}}" id="{{elementid}}_{{CSS.EQUATION_TEXT}}" rows="8"></textarea><br/>' +
                 '<label for="{{elementid}}_{{CSS.EQUATION_PREVIEW}}">{{get_string "preview" component}}</label>' +
                 '<div describedby="{{elementid}}_cursorinfo" class="well well-small fullwidth {{CSS.EQUATION_PREVIEW}}" id="{{elementid}}_{{CSS.EQUATION_PREVIEW}}"></div>' +
-                '<div id="{{elementid}}_cursorinfo">{{get_string "cursorinfo" component}}</div>' +
+              //  '<div id="{{elementid}}_cursorinfo">{{get_string "cursorinfo" component}}</div>' +
                 '<div class="mdl-align">' +
                     '<br/>' +
                     '<button class="{{CSS.SUBMIT}}">{{get_string "saveeasychem" component}}</button>' +
@@ -83,7 +83,7 @@ var COMPONENTNAME = 'atto_easychem',
                         '<div id="{{../elementid}}_{{../CSS.LIBRARY_GROUP_PREFIX}}_{{@key}}">' +
                             '<div role="toolbar">' +
                             '{{#split "\n" elements}}' +
-                                '<button tabindex="-1" data-tex="{{this}}" aria-label="{{this}}" title="{{this}}">' +
+                                '<button class="easychem_library" tabindex="-1" data-tex="{{this}}" aria-label="{{this}}" title="{{this}}">' +
                                     '{{../../DELIMITERS.START}}{{this}}{{../../DELIMITERS.END}}' +
                                 '</button>' +
                             '{{/split}}' +
@@ -390,7 +390,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
                 // Replace the easychem.
                 selectedNode = Y.one(host.getSelectionParentNode());
                 text = selectedNode.get('text');
-                value = ' ' + value + ' ';
+                value = '' + value + '';
                 newText =   text.slice(0, this.sourceEquation.startInnerPosition) +
                             value +
                             text.slice(this.sourceEquation.endInnerPosition);
@@ -399,7 +399,8 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             } else {
                 // Insert the new easychem.
                 //value = DELIMITERS.START + ' ' + value + ' ' + DELIMITERS.END;
-                value = DELIMITERS.START + '' + value + '' + DELIMITERS.END;
+                //value = DELIMITERS.START + '' + value + '' + DELIMITERS.END;
+                value = '%' + value + '%';
                 host.insertContentAtFocusPoint(value);
             }
 
@@ -439,6 +440,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @private
      */
     _updatePreview: function(e) {
+        console.log('updatepreview');
         var textarea = this._content.one(SELECTORS.EQUATION_TEXT),
             easychem = textarea.get('value'),
             url,
@@ -482,8 +484,10 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         var previewNode = this._content.one(SELECTORS.EQUATION_PREVIEW);
         easychem = DELIMITERS.START + '' + easychem + '' + DELIMITERS.END;
         console.log(easychem);
+
+
         // Make an ajax request to the filter.
-        url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
+/*        url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
         params = {
             sesskey: M.cfg.sesskey,
             contextid: this.get('contextid'),
@@ -500,18 +504,20 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             previewNode.setHTML(preview.responseText);
             Y.fire(M.core.event.FILTER_CONTENT_UPDATED, {nodes: (new Y.NodeList(previewNode))});
         }
+*/
 
-
+        var eid = this.get('host').get('elementid');
+        //console.log(eid);
 	YUI().use('node', 'easychem', function (Y) {
 	   
-	    console.log("here");
-	    var src = Y.one('#id_page_atto_easychem_easychem').get('value');
-		console.log(src);
+	    //console.log("here");
+	    var src = Y.one('#' + eid + '_atto_easychem_easychem').get('value');
+		//console.log(src);
 	    var res = ChemSys.compile(src); 
-		console.log(res);
+		//console.log(res);
 
 	    //ChemSys.draw($('#res-graph').empty()[0], res);
-	    ChemSys.draw(Y.one('#id_page_atto_easychem_preview').empty(), res);
+	    ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
 
 	    /*demo.on('click', function (e) {
 		demo.set('text', 'You clicked me!');
@@ -531,7 +537,9 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
     _getDialogueContent: function() {
         var library = this._getLibraryContent(),
             template = Y.Handlebars.compile(TEMPLATES.FORM);
-
+        console.log('getDialogContent');
+        //console.log(library);
+        //console.log(library.all('.easychem_library'));
         this._content = Y.Node.create(template({
             elementid: this.get('host').get('elementid'),
             component: COMPONENTNAME,
@@ -556,6 +564,23 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         this._content.one(SELECTORS.EQUATION_TEXT).on('mouseup', this._throttle(this._updatePreview, 500), this);
         this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._throttle(this._updatePreview, 500), this);
         this._content.delegate('click', this._selectLibraryItem, SELECTORS.LIBRARY_BUTTON, this);
+        //console.log(this._content.all('.easychem_library'));
+
+        this._content.all('.easychem_library').each(function(Y)  {
+
+		YUI().use('node', 'easychem', function (Y) {
+                    console.log(Y.get('innerHTML'));
+
+		    //var src = this.one('#' + eid + '_atto_easychem_easychem').get('value');
+		    //var res = ChemSys.compile(src); 
+		    //ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
+
+		});
+
+
+        });
+
+
 
         return this._content;
     },
@@ -676,12 +701,14 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @private
      */
     _getLibraryContent: function() {
+        console.log('getlibrarycontent');
         var template = Y.Handlebars.compile(TEMPLATES.LIBRARY),
             library = this.get('library'),
             content = '';
-
+        console.log(library);
         // Helper to iterate over a newline separated string.
         Y.Handlebars.registerHelper('split', function(delimiter, str, options) {
+
             var parts,
                 current,
                 out;
@@ -689,14 +716,50 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
                 Y.log('Handlebars split helper: String and delimiter are required.', 'debug', 'moodle-atto_easychem-button');
                 return '';
             }
-
+            console.log(options);
+            //console.log('str='+str);
             out = '';
             parts = str.trim().split(delimiter);
+            console.log('here');
+            //console.log(parts);
+////here we use easychem.js and convert
+
+           var partsLength = parts.length;
+	
+	   
+	    //console.log("here");
+	    
+		//console.log(res);
+
+		for (var i = 0; i < partsLength; i++) {
+    		
+                console.log(parts[i]);
+		var src = parts[i];
+
+                src = src.replace(/(\r\n|\n|\r)/gm, "");
+
+
+		//console.log(src);
+                YUI().use('node', 'easychem', function (Y) {
+	    	var res = ChemSys.compile(src); 
+	        //ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
+	        ChemSys.draw(Y.one('#' + 'id_page' + '_atto_easychem_preview').empty(), res);
+                //console.log(parts[i]);
+                });
+    		//Do something
+		}
+
+	    //ChemSys.draw($('#res-graph').empty()[0], res);
+            //console.log(parts);
+	
+            console.log('here2');
+            //console.log(parts);
+
             while (parts.length > 0) {
                 current = parts.shift().trim();
                 out += options.fn(current);
             }
-
+            console.log(out);
             return out;
         });
         content = template({
@@ -707,7 +770,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             DELIMITERS: DELIMITERS
         });
 
-        var url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
+  /*      var url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
         var params = {
             sesskey: M.cfg.sesskey,
             contextid: this.get('contextid'),
@@ -724,6 +787,10 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         if (preview.status === 200) {
             content = preview.responseText;
         }
+*/
+
+console.log(content);
+
 
         return content;
     }

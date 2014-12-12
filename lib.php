@@ -34,7 +34,6 @@ function atto_easychem_strings_for_js() {
     $PAGE->requires->strings_for_js(array('saveeasychem',
                                           'editeasychem',
                                           'preview',
-                                          'cursorinfo',
                                           'update',
                                           'librarygroup1',
                                           'librarygroup2',
@@ -85,5 +84,5 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     return array('texfilteractive' => $texfilteractive,
                  'contextid' => $context->id,
                  'library' => $library,
-                 'texdocsurl' => get_docs_url('Using_TeX_Notation'));
+                 'docsurl' => 'http://easychem.org/en/rules');
 }
