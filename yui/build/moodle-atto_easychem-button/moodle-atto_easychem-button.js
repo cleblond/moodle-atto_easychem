@@ -455,9 +455,12 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @private
      */
     _throttle: function(fn, delay) {
+        console.log('throttle');
         var timer = null;
         return function () {
+            console.log('throttleInside');
             var context = this, args = arguments;
+            console.log(args);
             clearTimeout(timer);
             timer = setTimeout(function () {
               fn.apply(context, args);
@@ -487,9 +490,9 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             isChar,
             params;
 
-        if (e) {
+       /* if (e) {
             e.preventDefault();
-        }
+        }*/
 
         // Move the cursor so it does not break expressions.
         // Start at the very beginning.
@@ -518,39 +521,18 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         easychem = DELIMITERS.START + '' + easychem + '' + DELIMITERS.END;
         console.log(easychem);
 
-
-        // Make an ajax request to the filter.
-/*        url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
-        params = {
-            sesskey: M.cfg.sesskey,
-            contextid: this.get('contextid'),
-            action: 'filtertext',
-            text: easychem
-        };
-
-        preview = Y.io(url, {
-            sync: true,
-            data: params
-        });
-
-        if (preview.status === 200) {
-            previewNode.setHTML(preview.responseText);
-            Y.fire(M.core.event.FILTER_CONTENT_UPDATED, {nodes: (new Y.NodeList(previewNode))});
-        }
-*/
-
         var eid = this.get('host').get('elementid');
         //console.log(eid);
 	YUI().use('node', 'easychem', function (Y) {
 	   
-	    //console.log("here");
-	    var src = Y.one('#' + eid + '_atto_easychem_easychem').get('value');
+	    console.log("here");
+	    var src = Y.one(SELECTORS.EQUATION_TEXT).get('value');
 		//console.log(src);
 	    var res = ChemSys.compile(src); 
 		//console.log(res);
 
 	    //ChemSys.draw($('#res-graph').empty()[0], res);
-	    ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
+	    ChemSys.draw(Y.one(SELECTORS.EQUATION_PREVIEW).empty(), res);
 
 	    /*demo.on('click', function (e) {
 		demo.set('text', 'You clicked me!');
@@ -591,41 +573,15 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
 
         // Keyboard navigation in groups.
         this._content.delegate('key', this._groupNavigation, 'down:37,39', SELECTORS.LIBRARY_BUTTON, this);
-
+        console.log(SELECTORS.EQUATION_TEXT);
         this._content.one(SELECTORS.SUBMIT).on('click', this._setEquation, this);
-        this._content.one(SELECTORS.EQUATION_TEXT).on('valuechange', this._throttle(this._updatePreview, 500), this);
-        this._content.one(SELECTORS.EQUATION_TEXT).on('mouseup', this._throttle(this._updatePreview, 500), this);
-        this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._throttle(this._updatePreview, 500), this);
+   //     this._content.one(SELECTORS.EQUATION_TEXT).on('valuechange', this._throttle(this._updatePreview, 500), this);
+   //     this._content.one(SELECTORS.EQUATION_TEXT).on('valuechange', this._updatePreview, this);
+   //     this._content.one(SELECTORS.EQUATION_TEXT).on('mouseup', this._throttle(this._updatePreview, 500), this);
+        this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._updatePreview, this);
+   //     this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._throttle(this._updatePreview, 500), this);
         this._content.delegate('click', this._selectLibraryItem, SELECTORS.LIBRARY_BUTTON, this);
         //console.log(this._content.all('.easychem_library'));
-
-
-
-/*
-		YUI().use('node', 'easychem', function (Y) {
-                    //console.log(this.get('innerHTML'));
-                    buttons = Y.all('.easychem_library').each(function (Y) {
-
-                    //var curtext = Y.get('innerHTML');
-      
-                    var src = Y.get('innerHTML');
-                    //console.log(src.substring(1, 7));
-	            if (src.substring(1, 7) != 'canvas') {;
-		            src = src.replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
-		      //      console.log('src='+src);
-			    var res = ChemSys.compile(src); 
-			    ChemSys.draw(Y.empty(), res);
-                            //console.log(Y.empty());
-                    }
-                    });;
-                    
-                    
-		});
-*/
-
-
-
-
 
         return this._content;
     },
@@ -758,58 +714,17 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             if (typeof delimiter === "undefined" || typeof str === "undefined") {
                 return '';
             }
-            //console.log(options);
-            //console.log('str='+str);
             out = '';
             parts = str.trim().split(delimiter);
-            //console.log('here');
-            //console.log(parts);
-////here we use easychem.js and convert
-
            var partsLength = parts.length;
 	
-	   
-	    //console.log("here");
-	    
-		//console.log(res);
-
-		/*for (var i = 0; i < partsLength; i++) {
-    		
-                //console.log(parts[i]);
-		var src = parts[i];
-
-                src = src.replace(/(\r\n|\n|\r)/gm, "");
-
-
-		//console.log(src);
-                YUI().use('node', 'easychem', function (Y) {
-	    	var res = ChemSys.compile(src); 
-	        //ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
-	        ChemSys.draw(Y.one('#' + 'id_page' + '_atto_easychem_preview').empty(), res);
-                //console.log(parts[i]);
-                }); 
-    		//Do something
-		} 
-                */
-	    //ChemSys.draw($('#res-graph').empty()[0], res);
-            //console.log(parts);
-	
-            //console.log('here2');
-            //console.log(parts);
 
             while (parts.length > 0) {
                 current = parts.shift().trim();
                 out += options.fn(current);
             }
-
-		var parser = new DOMParser();
-		var domout = parser.parseFromString(out, "application/xml");
-            //console.log(out.one('easychem_library'));
             return out;
         });
-
-        //console.log(library);
-
 
         content = template({
             elementid: this.get('host').get('elementid'),
@@ -818,28 +733,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             CSS: CSS,
             DELIMITERS: DELIMITERS
         });
-
-  /*      var url = M.cfg.wwwroot + '/lib/editor/atto/plugins/easychem/ajax.php';
-        var params = {
-            sesskey: M.cfg.sesskey,
-            contextid: this.get('contextid'),
-            action: 'filtertext',
-            text: content
-        };
-
-        preview = Y.io(url, {
-            sync: true,
-            data: params,
-            method: 'POST'
-        });
-
-        if (preview.status === 200) {
-            content = preview.responseText;
-        }
-*/
-
-//console.log(content);
-
 
         return content;
     }
