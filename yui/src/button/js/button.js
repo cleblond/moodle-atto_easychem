@@ -61,7 +61,6 @@ var COMPONENTNAME = 'atto_easychem',
                 '<textarea class="fullwidth {{CSS.EQUATION_TEXT}}" id="{{elementid}}_{{CSS.EQUATION_TEXT}}" rows="8"></textarea><br/>' +
                 '<label for="{{elementid}}_{{CSS.EQUATION_PREVIEW}}">{{get_string "preview" component}}</label>' +
                 '<div describedby="{{elementid}}_cursorinfo" class="well well-small fullwidth {{CSS.EQUATION_PREVIEW}}" id="{{elementid}}_{{CSS.EQUATION_PREVIEW}}"></div>' +
-              //  '<div id="{{elementid}}_cursorinfo">{{get_string "cursorinfo" component}}</div>' +
                 '<div class="mdl-align">' +
                     '<br/>' +
                     '<button class="{{CSS.SUBMIT}}">{{get_string "saveeasychem" component}}</button>' +
@@ -153,30 +152,8 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
     _easychemPatterns: [
         // We use space or not space because . does not match new lines.
         // $$ blah $$.
-        /\%([\S\s]+?)\%/,        
-        /\$\$([\S\s]+?)\$\$/,
-        // E.g. "\( blah \)".
-        /\\\(([\S\s]+?)\\\)/,
-        // E.g. "\[ blah \]".
-        /\\\[([\S\s]+?)\\\]/,
-        // E.g. "[tex] blah [/tex]".
-        /\[tex\]([\S\s]+?)\[\/tex\]/
+        /\%([\S\s]+?)\%/
     ],
-/**
-    _easychemPatterns: [
-        // We use space or not space because . does not match new lines.
-        // $$ blah $$.
-        /\$\$([\S\s]+?)\$\$/,
-        // E.g. "\( blah \)".
-        /\\\(([\S\s]+?)\\\)/,
-        // E.g. "\[ blah \]".
-        /\\\[([\S\s]+?)\\\]/,
-        // E.g. "[tex] blah [/tex]".
-        /\[tex\]([\S\s]+?)\[\/tex\]/
-    ],
-*/
-
-
 
     initializer: function() {
         this._groupFocus = {};
@@ -238,31 +215,15 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         var library = content.one(SELECTORS.LIBRARY);
 
 
-//cpvert easychem code for buttons
-		YUI().use('node', 'easychem', function (Y) {
-                    //console.log(this.get('innerHTML'));
+         //convert easychem code for buttons.
+                YUI().use('node', 'easychem', function (Y) {
                     buttons = Y.all('.easychem_library').each(function (Y) {
-
-                    //var curtext = Y.get('innerHTML');
-      
                     var src = Y.get('innerHTML');
-                    //console.log(src.substring(1, 7));
-	            if (src.substring(1, 7) != 'canvas') {;
-		            src = src.replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
-		      //      console.log('src='+src);
-			    var res = ChemSys.compile(src); 
-			    ChemSys.draw(Y.empty(), res);
-                            //console.log(Y.empty());
-                    }
-                    });;
-                    
-                    //console.log(buttons);
-                    //console.log(curbuttext);
-		    //var src = this.one('#' + eid + '_atto_easychem_easychem').get('value');
-		    //var res = ChemSys.compile(src); 
-		    //ChemSys.draw(Y.one('#' + eid + '_atto_easychem_preview').empty(), res);
-                    
-		});
+                            src = src.replace("&amp;", "&").replace("&gt;", ">").replace("&lt;", "<");
+                            var res = ChemSys.compile(src);
+                            ChemSys.draw(Y.empty(), res);
+                    });
+                });
 
 
 
@@ -294,7 +255,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @return {String|Boolean} The easychem or false.
      */
     _resolveEquation: function() {
-        console.log('resolveequation');
         // Find the easychem in the surrounding text.
         var selectedNode = this.get('host').getSelectionParentNode(),
             selection = this.get('host').getSelection(),
@@ -328,9 +288,10 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         // We have to deal with multiple occurences of the same easychem in a String so must be able to loop on the
         // match results.
         Y.Array.find(this._easychemPatterns, function(pattern) {
+
+
             // For each pattern in turn, find all whole matches (including the delimiters).
             var patternMatches = text.match(new RegExp(pattern.source, "g"));
-
             if (patternMatches && patternMatches.length) {
                 // This pattern matches at least once. See if this pattern matches our current position.
                 // Note: We return here to break the Y.Array.find loop - any truthy return will stop any subsequent
@@ -453,12 +414,9 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @private
      */
     _throttle: function(fn, delay) {
-        console.log('throttle');
         var timer = null;
         return function () {
-            console.log('throttleInside');
             var context = this, args = arguments;
-            console.log(args);
             clearTimeout(timer);
             timer = setTimeout(function () {
               fn.apply(context, args);
@@ -473,20 +431,11 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @method _updatePreview
      * @private
      */
-    _updatePreview: function(e) {
-        console.log('updatepreview');
+    _updatePreview: function() {
         var textarea = this._content.one(SELECTORS.EQUATION_TEXT),
             easychem = textarea.get('value'),
-            url,
-            preview,
             currentPos = textarea.get('selectionStart'),
-//            prefix = '<span class="easyChemConfig auto-compile"></span><div class="echem-formula" align="center">',
-//            post = '</div>',
-            prefix = '',
-            post = '',
-            cursorLatex = '',
-            isChar,
-            params;
+            isChar;
 
        /* if (e) {
             e.preventDefault();
@@ -512,30 +461,13 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         // Save the cursor position - for insertion from the library.
         this._lastCursorPos = currentPos;
         
-        easychem = prefix + easychem.substring(0, currentPos) + cursorLatex + easychem.substring(currentPos) + post;
-//        equation = prefix + equation.substring(0, currentPos) + cursorLatex + equation.substring(currentPos);
-
-        var previewNode = this._content.one(SELECTORS.EQUATION_PREVIEW);
+        //easychem = prefix + easychem.substring(0, currentPos) + cursorLatex + easychem.substring(currentPos) + post;
         easychem = DELIMITERS.START + '' + easychem + '' + DELIMITERS.END;
-        console.log(easychem);
-
-        var eid = this.get('host').get('elementid');
-        //console.log(eid);
-	YUI().use('node', 'easychem', function (Y) {
-	   
-	    console.log("here");
-	    var src = Y.one(SELECTORS.EQUATION_TEXT).get('value');
-		//console.log(src);
-	    var res = ChemSys.compile(src); 
-		//console.log(res);
-
-	    //ChemSys.draw($('#res-graph').empty()[0], res);
-	    ChemSys.draw(Y.one(SELECTORS.EQUATION_PREVIEW).empty(), res);
-
-	    /*demo.on('click', function (e) {
-		demo.set('text', 'You clicked me!');
-	    });  */
-	});
+        YUI().use('node', 'easychem', function (Y) {
+            var src = Y.one(SELECTORS.EQUATION_TEXT).get('value');
+            var res = ChemSys.compile(src);
+            ChemSys.draw(Y.one(SELECTORS.EQUATION_PREVIEW).empty(), res);
+        });
 
     },
 
@@ -550,9 +482,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
     _getDialogueContent: function() {
         var library = this._getLibraryContent(),
             template = Y.Handlebars.compile(TEMPLATES.FORM);
-        console.log('getDialogContent');
-        //console.log(library);
-        //console.log(library.all('.easychem_library'));
         this._content = Y.Node.create(template({
             elementid: this.get('host').get('elementid'),
             component: COMPONENTNAME,
@@ -571,7 +500,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
 
         // Keyboard navigation in groups.
         this._content.delegate('key', this._groupNavigation, 'down:37,39', SELECTORS.LIBRARY_BUTTON, this);
-        console.log(SELECTORS.EQUATION_TEXT);
         this._content.one(SELECTORS.SUBMIT).on('click', this._setEquation, this);
    //     this._content.one(SELECTORS.EQUATION_TEXT).on('valuechange', this._throttle(this._updatePreview, 500), this);
    //     this._content.one(SELECTORS.EQUATION_TEXT).on('valuechange', this._updatePreview, this);
@@ -579,7 +507,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._updatePreview, this);
    //     this._content.one(SELECTORS.EQUATION_TEXT).on('keyup', this._throttle(this._updatePreview, 500), this);
         this._content.delegate('click', this._selectLibraryItem, SELECTORS.LIBRARY_BUTTON, this);
-        //console.log(this._content.all('.easychem_library'));
 
         return this._content;
     },
@@ -700,11 +627,9 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
      * @private
      */
     _getLibraryContent: function() {
-        console.log('getlibrarycontent');
         var template = Y.Handlebars.compile(TEMPLATES.LIBRARY),
             library = this.get('library'),
             content = '';
-        //console.log(library);
         // Helper to iterate over a newline separated string.
         Y.Handlebars.registerHelper('split', function(delimiter, str, options) {
             var parts,
@@ -716,9 +641,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             }
             out = '';
             parts = str.trim().split(delimiter);
-           var partsLength = parts.length;
-	
-
             while (parts.length > 0) {
                 current = parts.shift().trim();
                 out += options.fn(current);
