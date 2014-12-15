@@ -57,7 +57,7 @@ var COMPONENTNAME = 'atto_easychem',
         FORM: '' +
             '<form class="atto_form">' +
                 '{{{library}}}' +
-                '<label for="{{elementid}}_{{CSS.EQUATION_TEXT}}">{{{get_string "editeasychem" component texdocsurl}}}</label>' +
+                '<label for="{{elementid}}_{{CSS.EQUATION_TEXT}}">{{{get_string "editeasychem" component docsurl}}}</label>' +
                 '<textarea class="fullwidth {{CSS.EQUATION_TEXT}}" id="{{elementid}}_{{CSS.EQUATION_TEXT}}" rows="8"></textarea><br/>' +
                 '<label for="{{elementid}}_{{CSS.EQUATION_PREVIEW}}">{{get_string "preview" component}}</label>' +
                 '<div describedby="{{elementid}}_cursorinfo" class="well well-small fullwidth {{CSS.EQUATION_PREVIEW}}" id="{{elementid}}_{{CSS.EQUATION_PREVIEW}}"></div>' +
@@ -486,7 +486,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
             elementid: this.get('host').get('elementid'),
             component: COMPONENTNAME,
             library: library,
-            texdocsurl: this.get('texdocsurl'),
+            docsurl: this.get('docsurl'),
             CSS: CSS
         }));
 
@@ -693,10 +693,10 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         /**
          * The link to the Moodle Docs page about TeX.
          *
-         * @attribute texdocsurl
+         * @attribute docsurl
          * @type string
          */
-        texdocsurl: {
+        docsurl: {
             value: null
         }
 
