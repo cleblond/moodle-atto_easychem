@@ -18,7 +18,7 @@
  * Atto text editor integration version file.
  *
  * @package    atto_easychem
- * @copyright  2013 Damyon Wiese  <damyon@moodle.com>
+ * @copyright  2014 onward Carl LeBlond  <carl.leblond@iup.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -51,11 +51,9 @@ function atto_easychem_strings_for_js() {
  */
 function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     global $DB;
-    //$texexample = '$$\pi$$';
 
     // Format a string with the active filter set.
     // If it is modified - we assume that some sort of text filter is working in this context.
-    //$result = format_text($texexample, true, $options);
 
     $easychemfilteractive = false;
     $context = $options['context'];
@@ -64,10 +62,10 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     }
 
     $availablefilters = filter_get_available_in_context($context);
-    if(array_key_exists('easychem', $availablefilters)){
-	    if ($availablefilters['easychem']->localstate != -1){
-	    $easychemfilteractive = true;
-	    }
+    if (array_key_exists('easychem', $availablefilters)) {
+        if ($availablefilters['easychem']->localstate != -1) {
+            $easychemfilteractive = true;
+        }
     }
 
     $library = array(
@@ -88,7 +86,6 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
                 'elements' => get_config('atto_easychem', 'librarygroup4'),
             ));
 
-    
     return array('texfilteractive' => $easychemfilteractive,
                  'contextid' => $context->id,
                  'library' => $library,

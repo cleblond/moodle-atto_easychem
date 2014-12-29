@@ -18,7 +18,7 @@
  * Settings that allow configuration of the list of tex examples in the easychem editor.
  *
  * @package    atto_easychem
- * @copyright  2013 Damyon Wiese
+ * @copyright  2014 onward Carl LeBlond  <carl.leblond@iup.edu>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -28,7 +28,7 @@ $ADMIN->add('editoratto', new admin_category('atto_easychem', new lang_string('p
 
 $settings = new admin_settingpage('atto_easychem_settings', new lang_string('settings', 'atto_easychem'));
 if ($ADMIN->fulltree) {
-    // Group 1
+    // Group 1.
     $name = new lang_string('librarygroup1', 'atto_easychem');
     $desc = new lang_string('librarygroup1_desc', 'atto_easychem');
     $default = '
@@ -36,8 +36,8 @@ CH3
 CH2
 CH
 OH
- H/O\H 
- H2C=CH2 
+H/O\H
+H2C=CH2
 /\/\
 \
 /
@@ -64,7 +64,7 @@ H2C//CH2
                                                 $default);
     $settings->add($setting);
 
-    // Group 2
+    // Group 2.
     $name = new lang_string('librarygroup2', 'atto_easychem');
     $desc = new lang_string('librarygroup2_desc', 'atto_easychem');
     $default = '
@@ -87,7 +87,7 @@ H_(y0.5)C\\CH|CH`//C`\HC`||HC/#2; #5_(y0.5)H
                                                 $default);
     $settings->add($setting);
 
-    // Group 3
+    // Group 3.
     $name = new lang_string('librarygroup3', 'atto_easychem');
     $desc = new lang_string('librarygroup3_desc', 'atto_easychem');
     $default = '
@@ -112,14 +112,14 @@ CH3-C-CH3; CH3|#C|OH
                                                 $default);
     $settings->add($setting);
 
-    // Group 4
+    // Group 4.
     $name = new lang_string('librarygroup4', 'atto_easychem');
     $desc = new lang_string('librarygroup4_desc', 'atto_easychem');
     $default = '
 H3BO3 + 3C2H5OH = (C2H5O)3B + 3H2O
 CaCO3 "1000^oC"--> CaO + CO2"|^"
 2$itemColor1(red)NaOH + $atomColor(blue)2H2SO4$atomColor() = $itemColor1(#F00)Na2SO4 + $color(#00F)H2"|^"
- 2NaOH + 2H2SO4 = Na2SO4 + H2"|^" 
+2NaOH + 2H2SO4 = Na2SO4 + H2"|^"
 4Fe2+ + 3[Fe(CN)6]3 → FeIII4[FeII(CN)6]3"|v"
 ';
     $setting = new admin_setting_configtextarea('atto_easychem/librarygroup4',
