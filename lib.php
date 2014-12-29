@@ -50,19 +50,26 @@ function atto_easychem_strings_for_js() {
  * @param stdClass $fpoptions - unused.
  */
 function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
-    $texexample = '$$\pi$$';
+    global $DB;
+    //$texexample = '$$\pi$$';
 
     // Format a string with the active filter set.
     // If it is modified - we assume that some sort of text filter is working in this context.
-    $result = format_text($texexample, true, $options);
+    //$result = format_text($texexample, true, $options);
 
-    $texfilteractive = ($texexample !== $result);
+    $easychemfilteractive = false;
     $context = $options['context'];
     if (!$context) {
         $context = context_system::instance();
     }
 
-    // Tex example librarys.
+    $availablefilters = filter_get_available_in_context($context);
+    if(array_key_exists('easychem', $availablefilters)){
+	    if ($availablefilters['easychem']->localstate != -1){
+	    $easychemfilteractive = true;
+	    }
+    }
+
     $library = array(
             'group1' => array(
                 'groupname' => 'librarygroup1',
@@ -81,7 +88,8 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
                 'elements' => get_config('atto_easychem', 'librarygroup4'),
             ));
 
-    return array('texfilteractive' => $texfilteractive,
+    
+    return array('texfilteractive' => $easychemfilteractive,
                  'contextid' => $context->id,
                  'library' => $library,
                  'docsurl' => 'http://easychem.org/en/rules');

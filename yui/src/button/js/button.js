@@ -238,7 +238,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto.
         tabview.render();
         dialogue.show();
         // Trigger any JS filters to reprocess the new nodes.
-        Y.fire(M.core.event.FILTER_CONTENT_UPDATED, {nodes: (new Y.NodeList(dialogue.get('boundingBox')))});
+        //Y.fire(M.core.event.FILTER_CONTENT_UPDATED, {nodes: (new Y.NodeList(dialogue.get('boundingBox')))});
 
         if (easychem) {
             content.one(SELECTORS.EQUATION_TEXT).set('text', easychem);
