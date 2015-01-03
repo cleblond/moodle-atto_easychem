@@ -55,7 +55,7 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     // Format a string with the active filter set.
     // If it is modified - we assume that some sort of text filter is working in this context.
 
-    $easychemfilteractive = false;
+    $easychemfilteractive = true;
     $context = $options['context'];
     if (!$context) {
         $context = context_system::instance();
@@ -65,8 +65,15 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     if (array_key_exists('easychem', $availablefilters)) {
         if ($availablefilters['easychem']->localstate != -1) {
             $easychemfilteractive = true;
+        } else {
+               $easychemfilteractive = false;
         }
     }
+
+
+    //$states = filter_get_global_states();
+
+
 
     $library = array(
             'group1' => array(
