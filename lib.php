@@ -61,19 +61,16 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     }
 
     // Check to see if filter is active if so add easychem.js module.
-    $availablefilters = filter_get_available_in_context($context);
-    if (array_key_exists('easychem', $availablefilters)) {
-        if ($availablefilters['easychem']->localstate != -1) {
-            $easychemfilteractive = true;
-
-            $url = $CFG->wwwroot . '/filter/easychem/js/easychem.js';
-            $url = new moodle_url($url);
-            $moduleconfig = array(
-                'name' => 'easychem',
-                'fullpath' => $url
-            );
-            $PAGE->requires->js_module($moduleconfig);
-        }
+    $filterenabled = filter_is_enabled('easychem');
+    if (filter_is_enabled('easychem')) {
+        $easychemfilteractive = true;
+        $url = $CFG->wwwroot . '/filter/easychem/js/easychem.js';
+        $url = new moodle_url($url);
+        $moduleconfig = array(
+            'name' => 'easychem',
+            'fullpath' => $url
+        );
+        $PAGE->requires->js_module($moduleconfig);
     }
 
     $library = array(
