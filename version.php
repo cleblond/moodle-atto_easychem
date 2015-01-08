@@ -24,6 +24,10 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2014051200;        // The current plugin version (Date: YYYYMMDDXX).
+$plugin->version   = 2015010800;        // The current plugin version (Date: YYYYMMDDXX).
 $plugin->requires  = 2014050800;        // Requires this Moodle version.
 $plugin->component = 'atto_easychem';  // Full name of the plugin (used for diagnostics).
+
+$plugin->dependencies = array(
+    'filter_easychem' => 2015010800
+);
