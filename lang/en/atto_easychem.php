@@ -24,13 +24,13 @@
 
 $string['editeasychem'] = 'Learn more about Easychem.js syntax <a href="{$a}" target="_blank">here</a>';
 $string['librarygroup1'] = 'Common';
-$string['librarygroup1_desc'] = 'TeX commands listed on the operators tab.';
+$string['librarygroup1_desc'] = 'EasyChem examples listed on the common tab.';
 $string['librarygroup2'] = 'Rings';
-$string['librarygroup2_desc'] = 'TeX commands listed on the arrows tab.';
+$string['librarygroup2_desc'] = 'EasyChem examples listed on the rings tab.';
 $string['librarygroup3'] = 'Groups';
-$string['librarygroup3_desc'] = 'TeX commands listed on the Greek symbols tab.';
+$string['librarygroup3_desc'] = 'EasyChem examples listed on the groups tab.';
 $string['librarygroup4'] = 'Reactions';
-$string['librarygroup4_desc'] = 'TeX commands listed on the advanced tab.';
+$string['librarygroup4_desc'] = 'EasyChem examples listed on the reactions tab.';
 $string['pluginname'] = 'EasyChem Equation/Structure Editor';
 $string['preview'] = 'Preview';
 $string['saveeasychem'] = 'Save';
