@@ -127,7 +127,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto
         _easychemPatterns: [
             // We use space or not space because . does not match new lines.
             // $$ blah $$.
-            /\%([\S\s]+?)\%/
+            /\[\%([\S\s]+?)\%\]/
         ],
         initializer: function() {
             this._groupFocus = {};
@@ -350,7 +350,7 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto
                     // Insert the new easychem.
                     //value = DELIMITERS.START + ' ' + value + ' ' + DELIMITERS.END;
                     //value = DELIMITERS.START + '' + value + '' + DELIMITERS.END;
-                    value = '%' + value + '%';
+                    value = '[%' + value + '%]';
                     host.insertContentAtFocusPoint(value);
                 }
                 // Clean the YUI ids from the HTML.
