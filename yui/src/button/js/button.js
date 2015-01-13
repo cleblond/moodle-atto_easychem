@@ -348,8 +348,6 @@ Y.namespace('M.atto_easychem').Button = Y.Base.create('button', Y.M.editor_atto
                     selectedNode.set('text', newText);
                 } else {
                     // Insert the new easychem.
-                    //value = DELIMITERS.START + ' ' + value + ' ' + DELIMITERS.END;
-                    //value = DELIMITERS.START + '' + value + '' + DELIMITERS.END;
                     value = '[%' + value + '%]';
                     host.insertContentAtFocusPoint(value);
                 }
