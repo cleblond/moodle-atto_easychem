@@ -61,8 +61,9 @@ function atto_easychem_params_for_js($elementid, $options, $fpoptions) {
     }
 
     // Check to see if filter is active if so add easychem.js module.
-    $filterenabled = filter_is_enabled('easychem');
-    if (filter_is_enabled('easychem')) {
+
+    $filterenabled = array_key_exists('easychem', filter_get_active_in_context($context));
+    if ($filterenabled) {
         $easychemfilteractive = true;
         $url = $CFG->wwwroot . '/filter/easychem/js/easychem.js';
         $url = new moodle_url($url);
